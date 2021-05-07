@@ -1,0 +1,98 @@
+{
+	"plugins": ["prettier", "@typescript-eslint"],
+	"extends": [
+		"airbnb-typescript",
+		"react-app",
+		"prettier",
+		"plugin:import/errors",
+		"plugin:import/warnings",
+		"plugin:import/typescript"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": 2020, // Allows for the parsing of modern ECMAScript features
+		"sourceType": "module", // Allows for the use of imports
+		"project": "./tsconfig.json",
+		"ecmaFeatures": {
+			"jsx": true // Allows for the parsing of JSX
+		}
+	},
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"paths": ["src"],
+				"extensions": [".js", ".jsx", ".ts", ".tsx"]
+			}
+		}
+	},
+	"rules": {
+		"object-curly-spacing": ["warn", "always"],
+		"import/no-cycle": [2, { "maxDepth": 1 }],
+		"import/no-extraneous-dependencies": 1,
+		"object-curly-newline": "off",
+		"no-unused-vars": [
+			"warn",
+			{
+				"vars": "all",
+				"args": "none"
+			}
+		],
+		"import/order": [
+			"error",
+			{
+				"groups": ["builtin", "external", "internal"],
+				"pathGroups": [
+					{
+						"pattern": "react",
+						"group": "external",
+						"position": "before"
+					}
+				],
+				"pathGroupsExcludedImportTypes": ["react"],
+				"newlines-between": "always",
+				"alphabetize": {
+					"order": "asc",
+					"caseInsensitive": true
+				}
+			}
+		],
+		"consistent-return": "off",
+		"no-return-await": "off",
+		"@typescript-eslint/semi": ["off"],
+		"@typescript-eslint/no-unused-vars": [
+			"warn",
+			{
+				"vars": "all",
+				"args": "none"
+			}
+		],
+		"@typescript-eslint/no-explicit-any": [
+			"warn",
+			{
+				"ignoreRestArgs": true
+			}
+		],
+		"no-param-reassign": [
+			2,
+			{
+				"props": false
+			}
+		],
+		"no-plusplus": [
+			"warn",
+			{
+				"allowForLoopAfterthoughts": true
+			}
+		],
+		"react/jsx-key": "error",
+		"react/no-array-index-key": "warn",
+		"react/jsx-props-no-spreading": "off",
+		"import/prefer-default-export": "off",
+		"react/jsx-boolean-value": "off",
+		"react/prop-types": "off",
+		"react/no-unescaped-entities": "off",
+		"react/jsx-one-expression-per-line": "off",
+		"react/jsx-wrap-multilines": "off",
+		"react/destructuring-assignment": "off"
+	}
+}
