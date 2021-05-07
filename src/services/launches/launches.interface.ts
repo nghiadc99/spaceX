@@ -19,14 +19,14 @@ export interface ILaunch {
 			cores: {
 				core_serial: string;
 				flight: number;
-				block?: any;
+				block?: unknown;
 				gridfins: boolean;
 				legs: boolean;
 				reused: boolean;
-				land_success?: any;
+				land_success?: unknown;
 				landing_intent: boolean;
-				landing_type?: any;
-				landing_vehicle?: any;
+				landing_type?: unknown;
+				landing_vehicle?: unknown;
 			}[];
 		};
 		second_stage: {
@@ -45,19 +45,19 @@ export interface ILaunch {
 				orbit_params: {
 					reference_system: string;
 					regime: string;
-					longitude?: any;
-					semi_major_axis_km?: any;
-					eccentricity?: any;
+					longitude?: unknown;
+					semi_major_axis_km?: unknown;
+					eccentricity?: unknown;
 					periapsis_km: number;
 					apoapsis_km: number;
 					inclination_deg: number;
-					period_min?: any;
-					lifespan_years?: any;
-					epoch?: any;
-					mean_motion?: any;
-					raan?: any;
-					arg_of_pericenter?: any;
-					mean_anomaly?: any;
+					period_min?: unknown;
+					lifespan_years?: unknown;
+					epoch?: unknown;
+					mean_motion?: unknown;
+					raan?: unknown;
+					arg_of_pericenter?: unknown;
+					mean_anomaly?: unknown;
 				};
 			}[];
 		};
@@ -65,12 +65,12 @@ export interface ILaunch {
 			reused: boolean;
 			recovery_attempt: boolean;
 			recovered: boolean;
-			ship?: any;
+			ship?: unknown;
 		};
 	};
-	ships: any[];
+	ships: unknown;
 	telemetry: {
-		flight_club?: any;
+		flight_club?: unknown;
 	};
 	launch_site: {
 		site_id: string;
@@ -80,22 +80,22 @@ export interface ILaunch {
 	launch_success: boolean;
 	launch_failure_details: {
 		time: number;
-		altitude?: any;
+		altitude?: unknown;
 		reason: string;
 	};
 	links: {
 		mission_patch: string;
 		mission_patch_small: string;
-		reddit_campaign?: any;
-		reddit_launch?: any;
-		reddit_recovery?: any;
-		reddit_media?: any;
-		presskit?: any;
+		reddit_campaign?: unknown;
+		reddit_launch?: unknown;
+		reddit_recovery?: unknown;
+		reddit_media?: unknown;
+		presskit?: unknown;
 		article_link: string;
 		wikipedia: string;
 		video_link: string;
 		youtube_id: string;
-		flickr_images: any[];
+		flickr_images: unknown;
 	};
 	details: string;
 	static_fire_date_utc: string | Date;
@@ -103,5 +103,5 @@ export interface ILaunch {
 	timeline: {
 		webcast_liftoff: number;
 	};
-	crew?: any;
+	crew?: unknown;
 }
