@@ -34,6 +34,7 @@ class HttpClientHelper {
 		}
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async post<T, U>(path: string, payload?: U, idParam?: number, headerConfig?: any) {
 		try {
 			const endpoint = apiRouteGenerator(path, idParam);

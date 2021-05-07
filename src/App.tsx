@@ -1,6 +1,7 @@
 import React, { UIEventHandler, useEffect, useState } from 'react';
 
-import { Box, Grid, makeStyles, Typography } from '@material-ui/core';
+import { Box, Grid, makeStyles, Typography, TextField, InputAdornment } from '@material-ui/core';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -22,10 +23,14 @@ const App = () => {
 	const [loadingMore, setLoadingMore] = useState(false);
 	const [launchDate, setLaunchDate] = useState<string>();
 	const [launchStatus, setLaunchStatus] = useState<string>();
+	const [keyword, setKeyword] = useState<string>();
 
 	const getListLaunch = async (currentPage: number) => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const queryParams: { [key: string]: any } = {};
-
+		if (keyword) {
+			queryParams.rocket_name = keyword;
+		}
 		if (launchDate && launchDate !== 'All') {
 			queryParams.start = launchDate;
 			queryParams.end = moment().format('YYYY-MM-DD');
@@ -59,7 +64,7 @@ const App = () => {
 			setLoadingMore(false);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [page, launchDate, launchStatus]);
+	}, [page, keyword, launchDate, launchStatus]);
 
 	const handleLoadMore = () => {
 		if (loading) return;
@@ -74,6 +79,18 @@ const App = () => {
 		if (scrollPosition <= clientHeight + 800 && !loadingMore) {
 			handleLoadMore();
 		}
+	};
+
+	const handleChangeKeyword = (
+		event: React.ChangeEvent<{
+			name?: string | undefined;
+			value: unknown;
+		}>,
+	) => {
+		if (page > 1) {
+			dispatch(launches.actions.setPage(1));
+		}
+		setKeyword(`${event.target.value}`);
 	};
 
 	const handleSelectLaunchDate = (
@@ -129,6 +146,24 @@ const App = () => {
 								/>
 							</Box>
 						</Grid>
+					</Grid>
+
+					<Grid item xs={3} className={classes.searchBox}>
+						<TextField
+							id="standard-search"
+							label="Search Rocket Name"
+							type="search"
+							value={keyword}
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position="end">
+										<SearchOutlinedIcon />
+									</InputAdornment>
+								),
+							}}
+							onChange={handleChangeKeyword}
+							fullWidth
+						/>
 					</Grid>
 				</Grid>
 			</Box>
