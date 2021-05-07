@@ -6,7 +6,6 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { CardItem, CustomSelect } from './components';
-import './App.css';
 // import { IQueryParam } from './services/common';
 import { filterLaunchDates, filterLaunchStatus, ITEM_PER_PAGE } from './constants';
 import { getLaunches } from './services/launches';
