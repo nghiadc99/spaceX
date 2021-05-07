@@ -5,6 +5,7 @@ import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 
+import './App.css';
 import { CardItem, CustomSelect } from './components';
 // import { IQueryParam } from './services/common';
 import { filterLaunchDates, filterLaunchStatus, ITEM_PER_PAGE } from './constants';
