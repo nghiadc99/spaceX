@@ -1,12 +1,13 @@
 import React, { UIEventHandler, useEffect, useState } from 'react';
 
-import { Box, Grid, makeStyles } from '@material-ui/core';
+import { Box, Grid, makeStyles, Typography } from '@material-ui/core';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CardItem } from './components';
+import { CardItem, CustomSelect } from './components';
 import './App.css';
 // import { IQueryParam } from './services/common';
-import { ITEM_PER_PAGE } from './constants';
+import { filterLaunchDates, filterLaunchStatus, ITEM_PER_PAGE } from './constants';
 import { getLaunches } from './services/launches';
 import { launches } from './store/Launches/reducers';
 import { LaunchesData, LaunchesLoading, LaunchesPage } from './store/Launches/selector';
@@ -19,8 +20,19 @@ const App = () => {
 	const page = useSelector(LaunchesPage);
 	// const [page, setPage] = useState(1);
 	const [loadingMore, setLoadingMore] = useState(false);
+	const [launchDate, setLaunchDate] = useState<string>();
+	const [launchStatus, setLaunchStatus] = useState<string>();
 
 	const getListLaunch = async (currentPage: number) => {
+		const queryParams: { [key: string]: any } = {};
+
+		if (launchDate && launchDate !== 'All') {
+			queryParams.start = launchDate;
+			queryParams.end = moment().format('YYYY-MM-DD');
+		}
+		if (launchStatus && launchStatus !== 'All') {
+			queryParams.launch_success = launchStatus === 'Success';
+		}
 		const query = [
 			{
 				key: 'limit',
@@ -31,6 +43,9 @@ const App = () => {
 				value: (currentPage - 1) * ITEM_PER_PAGE,
 			},
 		];
+		Object.keys(queryParams).forEach((queryParamKey) => {
+			query.push({ key: queryParamKey, value: queryParams[queryParamKey] });
+		});
 
 		dispatch(launches.actions.requestFetchData());
 		const response = await getLaunches(query);
@@ -44,7 +59,7 @@ const App = () => {
 			setLoadingMore(false);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [page]);
+	}, [page, launchDate, launchStatus]);
 
 	const handleLoadMore = () => {
 		if (loading) return;
@@ -61,8 +76,63 @@ const App = () => {
 		}
 	};
 
+	const handleSelectLaunchDate = (
+		event: React.ChangeEvent<{
+			name?: string | undefined;
+			value: unknown;
+		}>,
+	) => {
+		if (page > 1) {
+			dispatch(launches.actions.setPage(1));
+		}
+		setLaunchDate(`${event.target.value}`);
+	};
+
+	const handleSelectLaunchStatus = (
+		event: React.ChangeEvent<{
+			name?: string | undefined;
+			value: unknown;
+		}>,
+	) => {
+		if (page > 1) {
+			dispatch(launches.actions.setPage(1));
+		}
+		setLaunchStatus(`${event.target.value}`);
+	};
+	// if (!launchesData.length) {
+	// 	return (
+
+	// 	);
+	// }
 	return (
 		<Box onScroll={handleScroll} className={classes.root}>
+			<Box className={classes.topBar}>
+				<Grid container spacing={2} justify="space-between">
+					<Grid item container xs={4} spacing={2}>
+						<Grid item xs={6}>
+							<Box>
+								<Typography className={classes.titleFilter}>Launch Date</Typography>
+								<CustomSelect
+									onChange={handleSelectLaunchDate}
+									value={launchDate}
+									listData={filterLaunchDates}
+								/>
+							</Box>
+						</Grid>
+						<Grid item xs={6}>
+							<Box>
+								<Typography className={classes.titleFilter}>Status</Typography>
+								<CustomSelect
+									onChange={handleSelectLaunchStatus}
+									value={launchStatus}
+									listData={filterLaunchStatus}
+								/>
+							</Box>
+						</Grid>
+					</Grid>
+				</Grid>
+			</Box>
+
 			{(!loading || loadingMore) && (
 				<Box className={classes.listDataBox}>
 					<Grid container spacing={2}>
@@ -83,7 +153,26 @@ const useStyles = makeStyles((theme) => ({
 		height: '100vh',
 		overflowX: 'auto',
 	},
-
+	searchBox: {
+		display: 'flex',
+		alignItems: 'flex-end',
+	},
+	titleFilter: {
+		fontWeight: 'bold',
+		fontSize: '14px',
+	},
+	topBar: {
+		padding: theme.spacing(2),
+		width: '100%',
+		position: 'fixed',
+		zIndex: 1,
+		backgroundColor: 'white',
+		height: '80px',
+		overflow: 'hidden',
+		top: 0,
+		left: 0,
+		boxSizing: 'border-box',
+	},
 	listDataBox: {
 		overflow: 'hidden',
 		paddingTop: '100px',
